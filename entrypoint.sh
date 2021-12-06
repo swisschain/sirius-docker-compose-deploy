@@ -42,9 +42,12 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     echo found common secrets file
     ls -la ./secrets.json
   fi
-  echo pull main repository
-  cd ../$REPOSITORY_PATH_INFRASTRUCTURE
+  # REPOSITORY_ROOT_INFRASTRUCTURE to avoid git pull failure due to REPOSITORY_PATH_INFRASTRUCTURE doesn't exist
+  REPOSITORY_ROOT_INFRASTRUCTURE=\$(echo \$REPOSITORY_PATH_INFRASTRUCTURE | awk -F/ '{print \$1}')
+  echo pull main repository \($REPOSITORY_ROOT_INFRASTRUCTURE $REPOSITORY_PATH_INFRASTRUCTURE\)
+  cd ../$REPOSITORY_ROOT_INFRASTRUCTURE
   git pull
+  cd ../../$REPOSITORY_PATH_INFRASTRUCTURE
   # if "$REPOSITORY_SERVICE_DIR" found then we apply to one component, otherwise to all components
   if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
@@ -61,7 +64,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     if [ -d \$DIR_NAME ];then
       cd \$DIR_NAME
       pwd
-      # create a symlink for infra components to .env file (instead of coping it)
+      # create a symlink for infra components to .env file (instead of copying it)
       if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ];then
         echo found .env file
         if [ -f .env ];then
