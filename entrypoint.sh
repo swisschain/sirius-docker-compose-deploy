@@ -13,6 +13,9 @@ echo run command
 echo DOCKER_VM_HOST=$DOCKER_VM_HOST
 ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   hostname
+  # store home directory
+  HOME_DIRECTORY=\$(pwd)
+  echo HOME_DIRECTORY=$HOME_DIRECTORY
   # define functions
   start_docker() {
     echo run service
@@ -53,7 +56,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     DCD=$REPOSITORY_SERVICE_DIR
   else
     echo searching for docker-compose.yaml files
-    DCD=\$(find . -name docker-compose.yaml | awk -F/ '{print \$2}')
+    DCD=\$(find . -name docker-compose.yaml | awk -Fdocker-compose.yaml '{print \$1}')
   fi
   echo list of dirs \$DCD
   for DIR_NAME in \$DCD
