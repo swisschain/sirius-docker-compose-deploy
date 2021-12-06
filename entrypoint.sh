@@ -14,7 +14,7 @@ echo DOCKER_VM_HOST=$DOCKER_VM_HOST
 ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   hostname
   # store home directory
-  HOME_DIRECTORY=$(pwd)
+  HOME_DIRECTORY=\$(pwd)
   HOME_DIRECTORY2=\$(pwd)
   echo HOME_DIRECTORY=$HOME_DIRECTORY
   echo HOME_DIRECTORY=\$HOME_DIRECTORY
