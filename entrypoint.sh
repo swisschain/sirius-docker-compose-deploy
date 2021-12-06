@@ -46,7 +46,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   echo pull main repository \($REPOSITORY_ROOT_INFRASTRUCTURE $REPOSITORY_PATH_INFRASTRUCTURE\)
   cd ../$REPOSITORY_ROOT_INFRASTRUCTURE
   git pull
-  cd ../../$REPOSITORY_PATH_INFRASTRUCTURE
+  cd ../$REPOSITORY_PATH_INFRASTRUCTURE
   # if "$REPOSITORY_SERVICE_DIR" found then we apply to one component, otherwise to all components
   if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
