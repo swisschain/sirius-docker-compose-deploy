@@ -36,14 +36,13 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     docker-compose restart
   }
   echo pull secrets repository
-  cd $REPOSITORY_PATH_SECRETS/
+  cd $REPOSITORY_ROOT_SECRETS/
   git pull
   if [ -f ./secrets.json ];then
     echo found common secrets file
     ls -la ./secrets.json
   fi
   # REPOSITORY_ROOT_INFRASTRUCTURE to avoid git pull failure due to REPOSITORY_PATH_INFRASTRUCTURE doesn't exist
-  REPOSITORY_ROOT_INFRASTRUCTURE=\$(echo \$REPOSITORY_PATH_INFRASTRUCTURE | awk -F/ '{print \$1}')
   echo pull main repository \($REPOSITORY_ROOT_INFRASTRUCTURE $REPOSITORY_PATH_INFRASTRUCTURE\)
   cd ../$REPOSITORY_ROOT_INFRASTRUCTURE
   git pull
@@ -65,19 +64,19 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
       cd \$DIR_NAME
       pwd
       # create a symlink for infra components to .env file (instead of copying it)
-      if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ];then
+      if [ -f ../../../$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/.env ];then
         echo found .env file
         if [ -f .env ];then
           echo file or symlink exist
         else
           echo create symlink
-          ln -s ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/.env ./.env
+          ln -s ../../../$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/.env ./.env
         fi
       fi
       # show if we found 'secrets.json'
-      if [ -f ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json ];then
+      if [ -f ../../../$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/secrets.json ];then
         echo found service secrets file
-        ls -la ../../../$REPOSITORY_PATH_SECRETS/\$DIR_NAME/secrets.json
+        ls -la ../../../$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/secrets.json
       fi
       ls -la
       if [ "$ACTION" = "START" ];then
