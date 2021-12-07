@@ -56,7 +56,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     DCD=$REPOSITORY_SERVICE_DIR
   else
     echo searching for docker-compose.yaml files
-    DCD=\$(find . -name docker-compose.yaml | awk -Fdocker-compose.yaml '{print \$1}')
+    DCD=\$(find . -name docker-compose.yaml | awk -Fdocker-compose.yaml '{print \$1}' | awk -F. '{print $2}')
   fi
   echo list of dirs \$DCD
   for DIR_NAME in \$DCD
