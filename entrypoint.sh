@@ -63,7 +63,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   do
     echo
     echo   - = [ \$DIR_NAME ] = -
-    if [ -d \$DIR_NAME ];then
+    if [ -d \$HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME ];then
       cd \$HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME
       pwd
       echo ls secrets dir \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME
