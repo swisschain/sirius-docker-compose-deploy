@@ -66,6 +66,8 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     if [ -d \$DIR_NAME ];then
       cd \$DIR_NAME
       pwd
+      echo ls secrets dir \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME
+      ls -la \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/
       # create a symlink for infra components to .env file (instead of copying it)
       if [ -f \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/.env ];then
         echo found .env file
