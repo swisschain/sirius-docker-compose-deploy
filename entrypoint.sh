@@ -97,7 +97,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
     else
       echo \$DIR_NAME doesn\'t exist
     fi
-    cd $HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE
+    cd \$HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE
   done
   echo remove orphan docker images
   docker image prune -af
