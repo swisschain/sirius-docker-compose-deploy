@@ -49,7 +49,7 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   echo pull main repository \($REPOSITORY_ROOT_INFRASTRUCTURE $REPOSITORY_PATH_INFRASTRUCTURE\)
   cd ../$REPOSITORY_ROOT_INFRASTRUCTURE
   git pull
-  cd ../$REPOSITORY_PATH_INFRASTRUCTURE
+  cd $REPOSITORY_PATH_INFRASTRUCTURE
   # if "$REPOSITORY_SERVICE_DIR" found then we apply to one component, otherwise to all components
   if [ -n "$REPOSITORY_SERVICE_DIR" ];then
     echo REPOSITORY_SERVICE_DIR defined - $REPOSITORY_SERVICE_DIR
@@ -63,25 +63,25 @@ ssh $DOCKER_VM_HOST -i /tmp/id_rsa -o UserKnownHostsFile=/tmp/known_hosts << EOF
   do
     echo
     echo   - = [ \$DIR_NAME ] = -
-    if [ -d \$HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME ];then
-      cd \$HOME_DIRECTORY/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME
+    if [ -d \$HOME_DIRECTORY/$REPOSITORY_ROOT_INFRASTRUCTURE/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME ];then
+      cd \$HOME_DIRECTORY/$REPOSITORY_ROOT_INFRASTRUCTURE/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME
       pwd
-      echo ls secrets dir \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME
-      ls -la \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/
+      echo ls secrets dir \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME
+      ls -la \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME/
       # create a symlink for infra components to .env file (instead of copying it)
-      if [ -f \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/.env ];then
+      if [ -f \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME/.env ];then
         echo found .env file
         if [ -f .env ];then
           echo file or symlink exist
         else
           echo create symlink
-          ln -s \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/.env ./.env
+          ln -s \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME/.env ./.env
         fi
       fi
       # show if we found 'secrets.json'
-      if [ -f \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/secrets.json ];then
+      if [ -f \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME/secrets.json ];then
         echo found service secrets file
-        ls -la \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/\$DIR_NAME/secrets.json
+        ls -la \$HOME_DIRECTORY/$REPOSITORY_ROOT_SECRETS/$REPOSITORY_PATH_INFRASTRUCTURE/\$DIR_NAME/secrets.json
       fi
       ls -la
       if [ "$ACTION" = "START" ];then
